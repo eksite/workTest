@@ -14,7 +14,8 @@ class Messanger extends React.Component {
     }
     componentDidMount() {
         this.state.socket.on('message', (data) => {
-            this.state.messages.push(data);
+            // this.state.messages.push(data);
+            this.setState({ messages: this.state.messages.concat(data) })
             console.log(this.state.messages);
         })
     }
@@ -40,12 +41,14 @@ class Messanger extends React.Component {
                 </form>
                 {
                     this.state.messages.map((message, index) => (
-                        <li key={index}>{message.msg}</li>
-                    ))
+                        <div>
+                            <p key={index}>{message.username} </p>
+                            <li key={index}>{message.msg}</li>
+                        </div>))
                 }
             </div >
         )
     }
-
 }
+
 export default Messanger;

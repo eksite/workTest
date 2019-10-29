@@ -33,7 +33,7 @@ class Mainpage extends React.Component {
         e.preventDefault();
         if (this.state.name.length > 0 && this.state.room.length > 0) {
             socket.emit("join Room", { username: this.state.name, room: this.state.room }, (data) => {
-                if (data.success) {
+                if (data.namaAvailable) {
                     this.setState({ messageMode: true })
                 }
             })
