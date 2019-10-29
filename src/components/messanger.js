@@ -1,7 +1,10 @@
 import React from 'react';
-// import Styled from 'styled-components';
+import styled from 'styled-components';
 
-
+const Container = styled.form`
+    display:flex;
+    justify-content:center;
+`
 class Messanger extends React.Component {
 
     constructor(props) {
@@ -9,15 +12,15 @@ class Messanger extends React.Component {
         this.state = {
             message: '',
             socket: props.socket,
-            messages: []
+            messages: [],
         }
     }
+
     componentDidMount() {
         this.state.socket.on('message', (data) => {
-            // this.state.messages.push(data);
             this.setState({ messages: this.state.messages.concat(data) })
-            console.log(this.state.messages);
         })
+
     }
 
     handleInput = (e) => {
@@ -33,12 +36,13 @@ class Messanger extends React.Component {
     }
 
     render() {
+
         return (
             <div>
-                <form onSubmit={this.submit}>
+                <Container onSubmit={this.submit}>
                     <input type="text" value={this.state.message} id="message" onChange={this.handleInput} />
                     <button type="submit" value="Submit" />
-                </form>
+                </Container>
                 {
                     this.state.messages.map((message, index) => (
                         <div>
@@ -48,6 +52,7 @@ class Messanger extends React.Component {
                 }
             </div >
         )
+
     }
 }
 

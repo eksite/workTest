@@ -1,25 +1,47 @@
 import React from 'react';
-// import Styled from 'styled-component';
+import styled from 'styled-components';
 import Messanger from './messanger';
-import io from "socket.io-client"
-
-const socket = io('http://localhost:4000/');
-
-
-
+const Container = styled.div`
+    display:flex;
+flex-direction:column;
+    align-items:center;
+    
+`;
+const Submitform = styled.form`
+display:flex; 
+flex-direction:column;
+justify-content:center;
+align-items:center;
+width:400px;
+    height:400px;
+    flex:1;
+    `
+const Inputfield = styled.input`
+width:205px;
+height:20px
+`
+const Divcontainer = styled.div`
+ display: flex;
+      flex-direction: column;
+      flex: 1;
+      height:20px;
+      justify-content:center;
+      alight-content:center;
+`
+const Submit = styled.button`
+weight:300px;
+`
 class Mainpage extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            room: '',
-            // socket: props.socket,
+            room: this.props.room || '',
             messageMode: false,
-
+            socket: this.props.socket
         }
     }
-
 
     handleInputName = (e) => {
         this.setState({ name: e.target.value })
@@ -31,9 +53,10 @@ class Mainpage extends React.Component {
 
     submit = (e) => {
         e.preventDefault();
-        if (this.state.name.length > 0 && this.state.room.length > 0) {
-            socket.emit("join Room", { username: this.state.name, room: this.state.room }, (data) => {
+        if (this.state.name.trim().length > 0 && this.state.room.trim().length > 0) {
+            this.state.socket.emit("join Room", { username: this.state.name, room: this.state.room }, (data) => {
                 if (data.namaAvailable) {
+                    window.history.pushState('Page', 'yeye', `room/${this.state.room}`);
                     this.setState({ messageMode: true })
                 }
             })
@@ -43,20 +66,26 @@ class Mainpage extends React.Component {
     render() {
         if (!this.state.messageMode) {
             return (
-                <form onSubmit={this.submit} >
-                    <input id="name" onChange={this.handleInputName} value={this.state.name} />
-                    <input id="room" onChange={this.handleInputRoom} value={this.state.room} />
-                    <button type="submit"></button>
-                </form>
+                <Container>
+                    <h1>Welcome to my chat</h1>
+                    <Submitform onSubmit={this.submit} >
+                        <Divcontainer>
+                            <label>Name:</label>
+                            <Inputfield id="name" onChange={this.handleInputName} value={this.state.name} />
+                        </Divcontainer>
+                        <Divcontainer>
+                            <label>Room:</label>
+                            <Inputfield id="room" onChange={this.handleInputRoom} value={this.state.room} />
+                        </Divcontainer>
+                        <Submit type="submit" value="Submit" />
+                    </Submitform>
+                </Container>
             )
         }
         else {
-            return <Messanger socket={socket} />
+            return <Messanger socket={this.state.socket} />
         }
     }
-
-
 }
-
 
 export default Mainpage;
