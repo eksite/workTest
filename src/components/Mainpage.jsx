@@ -28,7 +28,8 @@ const Divcontainer = styled.div`
   alight-content: center;
 `;
 const Submit = styled.button`
-  weight: 300px;
+  width: 50px;
+  height: 17px;
 `;
 class Mainpage extends React.Component {
   constructor(props) {
@@ -80,7 +81,9 @@ class Mainpage extends React.Component {
                 value={this.state.room}
               />
             </Divcontainer>
-            <Submit type="submit" value="Submit" />
+            <Submit type="submit" value="Submit">
+              Enter
+            </Submit>
           </Submitform>
         </Container>
       );

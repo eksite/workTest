@@ -3,7 +3,7 @@ import styled from "styled-components";
 const Container = styled.div`
   position: fixed;
   width: 100vw;
-  height: 100vh;
+  height: 85vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -25,20 +25,21 @@ const Button = styled.button`
   width: 15%;
   height: 100%;
   border: 0;
-  background-color: lightseagreen;
+  background-color: lightsteelblue;
   color: #fff;
   font-size: 24px;
 `;
 const Chat = styled.div`
-  margin: 20px 0;
-  background-color: lightgrey;
+  // background-color: lightgrey;
   height: 100%;
   width: 100%;
   padding: 15px;
+  overflow-y: auto;
 `;
 const Content = styled.div`
+  overflow: hidden;
   width: 100%;
-  background-color: lightsteelblue;
+  // background-color: lightsteelblue;
   padding: 15px 25px;
   flex: 1;
 `;
@@ -81,8 +82,14 @@ class Messanger extends React.Component {
     this.state.socket.on("message", data => {
       this.setState({ messages: this.state.messages.concat(data) });
     });
+    this.scroll();
   };
 
+  componentDidUpdate() {
+    this.scroll();
+  }
+
+  scroll = () => (document.getElementById("chat").scrollTop = 9999);
   handleInput = e => this.setState({ message: e.target.value });
 
   submit = e => {
@@ -94,7 +101,8 @@ class Messanger extends React.Component {
     return (
       <Container>
         <Content>
-          <Chat>
+          Chat Room:{this.state.room}
+          <Chat id="chat">
             {this.state.messages.map((message, index) =>
               this.state.name.toLowerCase() ===
               message.username.toLowerCase() ? (
@@ -122,7 +130,9 @@ class Messanger extends React.Component {
             id="message"
             onChange={this.handleInput}
           />
-          <Button type="submit" value="Submit" />
+          <Button type="submit" value="Submit">
+            Send
+          </Button>
         </Formcontainer>
       </Container>
     );
