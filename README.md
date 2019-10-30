@@ -1,4 +1,4 @@
-## Start client dev webserver
+#Simple Chat by Denis Levenets
 
 ## Setup
 
@@ -9,20 +9,10 @@
 
     cd server && node index.js
 
-## Start client webserver
+## Start client dev webserver
 
     npm start
 
-## npm install in main directory and download dependencies
-
-and you should repeat this in /server.
+## INFO
 
 Ports 3000 and 4000 must be open, cause you front-end opens on port 3000 and connects to back-end by port 4000.
-
-## node index in /server
-
-Server starts.
-
-## npm start in base dir
-
-Enjoy!
