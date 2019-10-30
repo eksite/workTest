@@ -1,8 +1,17 @@
-This project created by Levenets Denis
+## Start client dev webserver
 
-## Available Scripts
+## Setup
 
-In the project directory, you should write:
+    npm i
+    cd server && npm i
+
+## Start server
+
+    cd server && node index.js
+
+## Start client webserver
+
+    npm start
 
 ## npm install in main directory and download dependencies
 
