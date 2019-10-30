@@ -3,7 +3,7 @@ import styled from "styled-components";
 const Container = styled.div`
   position: fixed;
   width: 100vw;
-  height: 85vh;
+  height: 94vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -25,7 +25,7 @@ const Button = styled.button`
   width: 15%;
   height: 100%;
   border: 0;
-  background-color: lightsteelblue;
+  background-color: orange;
   color: #fff;
   font-size: 24px;
 `;
