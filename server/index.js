@@ -1,47 +1,42 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-var connectedUsers = {};
+var moment = require('moment');
+let connUsers = {};
 
-io.on('connection', function (socket) {
-    socket.on('disconnect', function () {
-        var userData = connectedUsers[socket.id];
-        if (typeof userData !== 'undefined') {
-            socket.leave(connectedUsers[socket.id]);
-            delete connectedUsers[socket.id];
+io.on('connection', socket => {
+    socket.on('disconnect', () => {
+        const userData = connUsers[socket.id];
+        if (userData) {
+            socket.leave(connUsers[socket.id]);
+            delete connUsers[socket.id];
         }
     });
-    socket.on('join Room', function (req, callback) {
-        var nameTaken = false;
-
-        Object.keys(connectedUsers).forEach(function (socketId) {
-            var userInfo = connectedUsers[socketId];
-            if (userInfo.username.toUpperCase() === req.username.toUpperCase() && userInfo.room.toUpperCase() === req.room.toUpperCase()) {
+    socket.on('join_room', (req, callback) => {
+        let nameTaken = false;
+        Object.keys(connUsers).forEach(socketId => {
+            let userInfo = connUsers[socketId];
+            if (userInfo.username.toLowerCase() === req.username.toLowerCase() &&
+                userInfo.room.toLowerCase() === req.room.toLowerCase()) {
                 nameTaken = true;
             }
         });
 
         if (!nameTaken) {
-            connectedUsers[socket.id] = req;
-            console.log("joined");
+            connUsers[socket.id] = req;
             socket.join(req.room);
             callback({
                 namaAvailable: true,
-                username: 'System',
-                msg: req.username + ' has join the room'
             });
-        } else {
-            callback({ namaAvailable: false })
         }
 
-
     })
-    socket.on('chat message', function (msg) {
-        console.log("ioioio")
-        io.to(connectedUsers[socket.id].room).emit('message', { msg: msg, username: connectedUsers[socket.id].username });
+    socket.on('chat_message', msg => {
+        io.to(connUsers[socket.id].room)
+            .emit('message', { msg: msg, username: connUsers[socket.id].username, hours: new Date().getHours(), minutes: new Date().getMinutes() });
     });
 });
 
-http.listen(4000, function () {
-    console.log('listening on *3000');
+http.listen(4000, () => {
+    console.log('listening on 4000');
 });
