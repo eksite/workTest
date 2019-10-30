@@ -14,7 +14,7 @@ const socket = io('http://localhost:4000/');
 
 ReactDOM.render((
     <Router>
-        <Route path="//" render={() => <App socket={socket} />} />
+        <Route exact path="/" render={() => <App socket={socket} />} />
         <Route path="/room/:id" render={(props) => <App socket={socket} room={props.match.params.id} />} />
     </Router>)
     , document.getElementById('root'));

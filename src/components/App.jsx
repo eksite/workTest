@@ -52,7 +52,7 @@ class Mainpage extends React.Component {
     if (name.trim().length > 0 && room.trim().length > 0) {
       socket.emit("join_room", { username: name, room: room }, data => {
         if (data.namaAvailable) {
-          window.history.pushState("Page", "yeye", `room/${room}`);
+          window.history.pushState("Page", "", `/room/${room}`);
           this.setState({ messageMode: true });
         }
       });
