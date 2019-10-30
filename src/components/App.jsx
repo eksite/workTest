@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Messanger from "./Messanger";
+import Chat from "./Chat";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -89,7 +89,7 @@ class Mainpage extends React.Component {
       );
     } else {
       return (
-        <Messanger
+        <Chat
           name={this.state.name}
           room={this.state.room}
           socket={this.state.socket}

@@ -108,6 +108,7 @@ class Messanger extends React.Component {
   submit = e => {
     e.preventDefault();
     this.state.socket.emit("chat_message", this.state.message);
+    this.setState({ message: "" });
   };
 
   render() {
