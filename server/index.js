@@ -8,9 +8,23 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         const userData = connUsers[socket.id];
         if (userData) {
+            io.to(connUsers[socket.id].room)
+                .emit('delete', { user: connUsers[socket.id].username });
             socket.leave(connUsers[socket.id]);
             delete connUsers[socket.id];
         }
+    });
+    socket.on('get_users', req => {
+        let users = [];
+        Object.keys(connUsers).forEach(socketId => {
+            let userInfo = connUsers[socketId];
+            if (userInfo.room.toLowerCase() === req.room.toLowerCase()) {
+                users.push(userInfo.username)
+            }
+
+        });
+        io.to(connUsers[socket.id].room)
+            .emit('get_users', { users: users });
     });
     socket.on('join_room', (req, callback) => {
         let nameTaken = false;

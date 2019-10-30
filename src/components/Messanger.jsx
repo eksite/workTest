@@ -79,8 +79,21 @@ class Messanger extends React.Component {
   }
 
   componentDidMount = () => {
+    this.state.socket.emit("get_users", { room: this.state.room });
+    this.state.socket.on("get_users", data => {
+      this.setState({ persons: [...data.users] });
+    });
     this.state.socket.on("message", data => {
       this.setState({ messages: this.state.messages.concat(data) });
+    });
+    this.state.socket.on("delete", data => {
+      let array = this.state.persons;
+      array.forEach((item, index) => {
+        if (item === data.user) {
+          array.splice(index, 1);
+          this.setState({ persons: array });
+        }
+      });
     });
     this.scroll();
   };
@@ -102,6 +115,13 @@ class Messanger extends React.Component {
       <Container>
         <Content>
           Chat Room:{this.state.room}
+          <br />
+          Here:{" "}
+          <select>
+            {this.state.persons.map((options, index) => {
+              return <option value={options}>{options}</option>;
+            })}
+          </select>
           <Chat id="chat">
             {this.state.messages.map((message, index) =>
               this.state.name.toLowerCase() ===
